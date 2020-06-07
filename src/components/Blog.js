@@ -5,7 +5,7 @@ import { render } from '@testing-library/react'
 
 
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog, user, handleLike }) => {
 
   const blogStyle = {
 
@@ -33,23 +33,12 @@ const handleShowLess = (event) => {
 
 if(showAll === false){
 return (
-  <div style={blogStyle}>
-    {blog.title} {blog.author} <button onClick={handleShowMore}>Show more</button>
+  <div id='blog' style={blogStyle}>
+    {blog.title} {blog.author} <button id='showMore' onClick={handleShowMore}>Show more</button>
   </div>
 )
 }
 
-
-
-const handleLike = (blogObject) => {
-
-  console.log('triggered')
-  blog.likes = blog.likes + 1
-  blogService.update(blog.id, blog)
-  //window.location.reload(false)
-  setLikes(blog.likes + 1)
-  
-}
 
 const handleRemove = (id) => {
 
@@ -65,11 +54,14 @@ if(user){
 
 if(showAll === true){
 
+  console.log(blog)
+  console.log(user)
+
   if(user){
   if(blog.user.username === user.username){
 
     return (
-      <div style={blogStyle}>
+      <div id='blog'style={blogStyle}>
       <div>
         {blog.title} {blog.author}
       </div>
@@ -77,12 +69,12 @@ if(showAll === true){
         {blog.url}
       </div>
       <div>
-        {blog.likes} <button onClick={() => handleLike(blog)}>Like</button>
+        {blog.likes} <button id='like' onClick={() => handleLike(blog)}>Like</button>
       </div>
       <div>
         {blog.author} <button onClick={handleShowLess}>Show less</button>
       </div>
-      <button onClick={() => {handleRemove(blog.id, user.token)}}>remove</button>
+      <button id='remove' onClick={() => {handleRemove(blog.id, user.token)}}>remove</button>
       </div>
     )
 
@@ -90,7 +82,7 @@ if(showAll === true){
 }
 
   return (
-    <div style={blogStyle}>
+    <div id='blog' style={blogStyle}>
     <div>
       {blog.title} {blog.author}
     </div>
@@ -98,7 +90,7 @@ if(showAll === true){
       {blog.url}
     </div>
     <div>
-      {blog.likes} <button onClick={() => handleLike(blog)}>Like</button>
+      {blog.likes} <button id='like' onClick={() => handleLike(blog)}>Like</button>
     </div>
     <div>
       {blog.author} <button onClick={handleShowLess}>Show less</button>

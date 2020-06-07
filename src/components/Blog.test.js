@@ -41,7 +41,7 @@ test('show more is working', () => {
 
 })
 
-test('like is working', () => {
+test('like is working', async() => {
 
     const blog = {
 
@@ -53,8 +53,9 @@ test('like is working', () => {
 
     const mockHandler = jest.fn()
 
-    const component = render(<Blog blog={blog}/>)
-    handleLike={mockHandler}
+    const component = render(<Blog blog={blog} handleLike={mockHandler}/>)
+
+    
 
     const button = component.getByText('Show more')
     fireEvent.click(button)
@@ -63,7 +64,7 @@ test('like is working', () => {
     fireEvent.click(button2)
     fireEvent.click(button2)
 
-    expect(mockHandler.mock.calls).toHaveLength(1)
+    expect(mockHandler.mock.calls).toHaveLength(2)
 
 
 

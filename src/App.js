@@ -17,6 +17,7 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const [user, setUser] = useState(null)
   const [createVisible, setCreateVisible] = useState(false)
+  const [likes, setLikes] = useState(0)
 
   const addBlog = (blogObject) => {
 
@@ -46,6 +47,17 @@ const App = () => {
 
   }
 
+  const handleLike = (blogObject) => {
+
+    //console.log('triggered')
+    blogObject.likes = blogObject.likes + 1
+    blogService.update(blogObject.id, blogObject)
+    //window.location.reload(false)
+    setLikes(blogObject.likes + 1) //Jotta liket päivittyy ruudulle heti
+    
+  }
+  
+
 
   useEffect(() => {
 
@@ -57,11 +69,9 @@ const App = () => {
 
     getBlogs()
     
-  }, [])
+  }, [createVisible])
 
   
-
-
 
   useEffect(() => {
 
@@ -111,6 +121,7 @@ const App = () => {
           <input
           type="text"
           value={username}
+          id='username'
           name="Username"
           onChange={({ target }) => setUsername(target.value)}
         />
@@ -119,12 +130,13 @@ const App = () => {
         password
           <input
           type="password"
+          id='password'
           value={password}
           name="Password"
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">login</button>
+      <button id='login' type="submit">login</button>
     </form>      
   )
 
@@ -136,7 +148,7 @@ const App = () => {
     return(
       <div>
       <div style={hideWhenVisible}>
-        <button onClick={() => setCreateVisible(true)}>Create New</button>
+        <button id='createNew' onClick={() => setCreateVisible(true)}>Create New</button>
       </div>
       <div style={showWhenVisible}>
         <BlogForm
@@ -149,8 +161,6 @@ const App = () => {
   }
 
 
-
-
   return (
     <div>
       <h2>login</h2>
@@ -160,14 +170,14 @@ const App = () => {
       {user === null ?
        loginForm() :
        <div>
-         <p>{user.name} logged in</p> <button type="button" onClick={handleLogOut}>logout</button>
+         <p>{user.name} logged in</p> <button id='logOut' type="button" onClick={handleLogOut}>logout</button>
          {blogForm()}
         </div>
       }
 
       <h2>blogs</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} user = {user}/>
+        <Blog key={blog.id} blog={blog} user = {user} handleLike={handleLike}/>
       )}
     </div>
   )
