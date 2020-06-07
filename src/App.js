@@ -7,13 +7,13 @@ import loginService from './services/login'
 import './index.css'
 
 const App = () => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  //const [title, setTitle] = useState('')
+  //const [author, setAuthor] = useState('')
+  //const [url, setUrl] = useState('')
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState(null)
+  //const [errorMessage, setErrorMessage] = useState(null)
   const [message, setMessage] = useState(null)
   const [user, setUser] = useState(null)
   const [createVisible, setCreateVisible] = useState(false)
@@ -21,31 +21,26 @@ const App = () => {
 
   const addBlog = (blogObject) => {
 
-   blogService
-     .create(blogObject)
-     .then(returnedBlog => {
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
 
-      setMessage('A new blog ' + returnedBlog.title + ' by ' + returnedBlog.author + ' added!')
-     //console.log(errorMessage)
-     setTimeout(() => {
-       setMessage(null)
-     }, 5000)
+        setMessage('A new blog ' + returnedBlog.title + ' by ' + returnedBlog.author + ' added!')
+        //console.log(errorMessage)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
 
 
-       setBlogs(blogs.concat(returnedBlog))
-       setTitle('')
-       setAuthor('')
-       setUrl('')
-       setCreateVisible(false)
-     })
-
-  }
-
-  const getUser = () => {
-
-    return user
+        setBlogs(blogs.concat(returnedBlog))
+        //setTitle('')
+        //setAuthor('')
+        //setUrl('')
+        setCreateVisible(false)
+      })
 
   }
+
 
   const handleLike = (blogObject) => {
 
@@ -54,9 +49,9 @@ const App = () => {
     blogService.update(blogObject.id, blogObject)
     //window.location.reload(false)
     setLikes(blogObject.likes + 1) //Jotta liket päivittyy ruudulle heti
-    
+
   }
-  
+
 
 
   useEffect(() => {
@@ -68,10 +63,11 @@ const App = () => {
     }
 
     getBlogs()
-    
+
   }, [createVisible])
 
-  
+
+
 
   useEffect(() => {
 
@@ -90,35 +86,35 @@ const App = () => {
         username, password,
       })
 
-      
 
-    window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-    blogService.setToken(user.token)
-    setUser(user)
-    setUsername('')
-    setPassword('')
-  } catch(excpetion) {
-    setMessage('wrong credentials')
-    //console.log(errorMessage)
-    setTimeout(() => {
-      setMessage(null)
-    }, 5000)
+
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      blogService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch(excpetion) {
+      setMessage('wrong credentials')
+      //console.log(errorMessage)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+
   }
 
-  }
-
-  const handleLogOut = async (event) => {
+  const handleLogOut = async () => {
 
     window.localStorage.clear()
     setUser(null)
   }
 
-  
+
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
         username
-          <input
+        <input
           type="text"
           value={username}
           id='username'
@@ -128,7 +124,7 @@ const App = () => {
       </div>
       <div>
         password
-          <input
+        <input
           type="password"
           id='password'
           value={password}
@@ -137,25 +133,25 @@ const App = () => {
         />
       </div>
       <button id='login' type="submit">login</button>
-    </form>      
+    </form>
   )
 
   const blogForm = () => {
 
-    const hideWhenVisible = { display: createVisible ? 'none' : ''}
+    const hideWhenVisible = { display: createVisible ? 'none' : '' }
     const showWhenVisible = { display: createVisible ? '' : 'none' }
 
     return(
       <div>
-      <div style={hideWhenVisible}>
-        <button id='createNew' onClick={() => setCreateVisible(true)}>Create New</button>
-      </div>
-      <div style={showWhenVisible}>
-        <BlogForm
-          createBlog={addBlog}
+        <div style={hideWhenVisible}>
+          <button id='createNew' onClick={() => setCreateVisible(true)}>Create New</button>
+        </div>
+        <div style={showWhenVisible}>
+          <BlogForm
+            createBlog={addBlog}
           />
-        <button onClick={() => setCreateVisible(false)}>cancel</button>
-      </div>
+          <button onClick={() => setCreateVisible(false)}>cancel</button>
+        </div>
       </div>
     )
   }
@@ -168,10 +164,10 @@ const App = () => {
 
 
       {user === null ?
-       loginForm() :
-       <div>
-         <p>{user.name} logged in</p> <button id='logOut' type="button" onClick={handleLogOut}>logout</button>
-         {blogForm()}
+        loginForm() :
+        <div>
+          <p>{user.name} logged in</p> <button id='logOut' type="button" onClick={handleLogOut}>logout</button>
+          {blogForm()}
         </div>
       }
 

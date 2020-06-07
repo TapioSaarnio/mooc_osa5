@@ -1,9 +1,5 @@
 import React, { useState, useReducer } from 'react'
 import blogService from '../services/blogs'
-import App from '../App.js'
-import { render } from '@testing-library/react'
-
-
 
 const Blog = ({ blog, user, handleLike }) => {
 
@@ -18,85 +14,78 @@ const Blog = ({ blog, user, handleLike }) => {
 
   }
 
-const [showAll, setShowAll] = useState(false)
-const [likes, setLikes] = useState(blog.likes)
+  const [showAll, setShowAll] = useState(false)
 
-const handleShowMore = (event) => {
+  const handleShowMore = () => {
 
-  setShowAll(true)
-} 
+    setShowAll(true)
+  }
 
-const handleShowLess = (event) => {
-  setShowAll(false)
-}
-
-
-if(showAll === false){
-return (
-  <div id='blog' style={blogStyle}>
-    {blog.title} {blog.author} <button id='showMore' onClick={handleShowMore}>Show more</button>
-  </div>
-)
-}
+  const handleShowLess = () => {
+    setShowAll(false)
+  }
 
 
-const handleRemove = (id) => {
-
-  blogService.del(id, user.token)
-  window.location.reload(false);
-
-}
-
-if(user){
-  console.log(user)
-}
-
-
-if(showAll === true){
-
-  console.log(blog)
-  console.log(user)
-
-  if(user){
-  if(blog.user.username === user.username){
-
+  if(showAll === false){
     return (
-      <div id='blog'style={blogStyle}>
-      <div>
-        {blog.title} {blog.author}
-      </div>
-      <div>
-        {blog.url}
-      </div>
-      <div>
-        {blog.likes} <button id='like' onClick={() => handleLike(blog)}>Like</button>
-      </div>
-      <div>
-        {blog.author} <button onClick={handleShowLess}>Show less</button>
-      </div>
-      <button id='remove' onClick={() => {handleRemove(blog.id, user.token)}}>remove</button>
+      <div id='blog' style={blogStyle}>
+        {blog.title} {blog.author} <button id='showMore' onClick={handleShowMore}>Show more</button>
       </div>
     )
+  }
+
+
+  const handleRemove = (id) => {
+
+    blogService.del(id, user.token)
+    window.location.reload(false)
 
   }
-}
 
-  return (
-    <div id='blog' style={blogStyle}>
-    <div>
-      {blog.title} {blog.author}
-    </div>
-    <div>
-      {blog.url}
-    </div>
-    <div>
-      {blog.likes} <button id='like' onClick={() => handleLike(blog)}>Like</button>
-    </div>
-    <div>
-      {blog.author} <button onClick={handleShowLess}>Show less</button>
-    </div>
-    </div>
-  )
+  if(showAll === true){
+
+
+
+    if(user){
+      if(blog.user.username === user.username){
+
+        return (
+          <div id='blog'style={blogStyle}>
+            <div>
+              {blog.title} {blog.author}
+            </div>
+            <div>
+              {blog.url}
+            </div>
+            <div>
+              {blog.likes} <button id='like' onClick={() => handleLike(blog)}>Like</button>
+            </div>
+            <div>
+              {blog.author} <button onClick={handleShowLess}>Show less</button>
+            </div>
+            <button id='remove' onClick={() => {handleRemove(blog.id, user.token)}}>remove</button>
+          </div>
+        )
+
+      }
+    }
+
+    return (
+      <div id='blog' style={blogStyle}>
+        <div>
+          {blog.title} {blog.author}
+        </div>
+        <div>
+          {blog.url}
+        </div>
+        <div>
+          {blog.likes} <button id='like' onClick={() => handleLike(blog)}>Like</button>
+        </div>
+        <div>
+          {blog.author} <button onClick={handleShowLess}>Show less</button>
+        </div>
+      </div>
+    )
 
 }
 
